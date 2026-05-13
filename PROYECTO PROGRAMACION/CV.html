@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Mendoza Martinez Anderson</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            color: var(--text-color);
+        }
+
+        .cv-container {
+            background: white;
+            width: 900px;
+            margin: 40px 0;
+            display: grid;
+            grid-template-columns: 35% 65%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Columna Izquierda (Sidebar) */
+        .sidebar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid var(--secondary-color);
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .sidebar h2 {
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        .contact-info p {
+            font-size: 0.9rem;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        .skills-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .skills-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        /* Columna Derecha (Contenido) */
+        .main-content {
+            padding: 40px;
+        }
+
+        .header-name h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .header-name h3 {
+            margin: 5px 0;
+            color: var(--secondary-color);
+            font-weight: 400;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            text-transform: uppercase;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 20px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        .item-sub {
+            color: var(--secondary-color);
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        ul.job-bullets {
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .cv-container {
+                grid-template-columns: 1fr;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cv-container">
+        <!-- BARRA LATERAL -->
+        <aside class="sidebar">
+            <!-- FOTO DE PERFIL -->
+            <!-- Cambia 'TU_FOTO.jpg' por el nombre de tu archivo de imagen -->
+            <img src="foto.jpg" alt="Foto Anderson" class="profile-img">
+
+            <div class="contact-info">
+                <h2>Contacto</h2>
+                <p><i class="fas fa-user"></i> 20 Años</p>
+                <p><i class="fas fa-phone"></i> +51 934 248 422</p>
+                <p><i class="fas fa-envelope"></i> anderson.mendoza@email.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lima, Perú</p>
+                <p><i class="fab fa-linkedin"></i> linkedin.com/in/anderson</p>
+            </div>
+
+            <h2>Habilidades Soft</h2>
+            <ul class="skills-list">
+                <li>Resolución de problemas</li>
+                <li>Atención al cliente</li>
+                <li>Trabajo en equipo</li>
+                <li>Comunicación asertiva</li>
+                <li>Gestión del tiempo</li>
+            </ul>
+
+            <h2>Tecnologías</h2>
+            <ul class="skills-list">
+                <li>Algoritmos y Estructuras</li>
+                <li>Diseño Gráfico (Básico)</li>
+                <li>Microsoft Office</li>
+                <li>Soporte Técnico</li>
+            </ul>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="header-name">
+                <h1>MENDOZA MARTINEZ ANDERSON</h1>
+                <h3>Estudiante de Ingeniería de Sistemas</h3>
+            </header>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-user-tie"></i> Perfil Profesional</h2>
+                <p class="description">
+                    Estudiante proactivo de Ingeniería de Sistemas con capacidad de aprendizaje rápido y enfoque en soluciones tecnológicas. Cuento con experiencia en atención al cliente y gestión logística en el sector transporte. Poseo habilidades para el diseño técnico y soporte operativo, buscando mi primera oportunidad para aplicar conocimientos de ingeniería en un entorno profesional.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-briefcase"></i> Experiencia Laboral</h2>
+                
+                <div class="experience-item">
+                    <div class="item-header">
+                        <span>PERU BUS</span>
+                        <span>Diciembre 2023 - Marzo 2024</span>
+                    </div>
+                    <div class="item-sub">Asistente de Atención al Cliente y Carga</div>
+                    <ul class="job-bullets">
+                        <li>Atención directa al usuario gestionando consultas, reclamos y venta de servicios.</li>
+                        <li>Control y registro de carga/encomiendas, asegurando la trazabilidad de la mercadería.</li>
+                        <li>Apoyo en el área de <strong>Diseño y Publicidad</strong>, colaborando en la creación de piezas visuales para promociones internas.</li>
+                        <li>Optimización de tiempos en el proceso de embarque y despacho de unidades.</li>
+                        <li>Manejo de caja y cuadre de ingresos diarios.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Formación Académica</h2>
+                
+                <div class="education-item">
+                    <div class="item-header">
+                        <span>Ingeniería de Sistemas</span>
+                        <span>2022 - Presente</span>
+                    </div>
+                    <div class="item-sub">Universidad (Indica el nombre de tu U)</div>
+                    <p class="description">Cursando actualmente con énfasis en desarrollo de software, redes y base de datos.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-laptop-code"></i> Proyectos y Otros</h2>
+                <div class="education-item">
+                    <div class="item-header">
+                        <span>Soporte Técnico Independiente</span>
+                    </div>
+                    <p class="description">Mantenimiento preventivo y correctivo de hardware y software para equipos particulares.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title"><i class="fas fa-language"></i> Idiomas</h2>
+                <p><strong>Español:</strong> Nativo | <strong>Inglés:</strong> Básico - Intermedio</p>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
