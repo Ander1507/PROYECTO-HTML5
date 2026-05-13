@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anderson | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- ICONOS -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo"><span>A</span>nderson.</a>
+    <div class="menu-toggle" id="menu-toggle">
+        <i class="ri-menu-3-line"></i>
+    </div>
+    <nav class="navbar" id="navbar">
+        <a href="#" class="active">Inicio</a>
+        <a href="#sobre">Sobre mí</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="inicio" id="inicio">
+    <div class="contenido">
+        <span class="bienvenida">Bienvenido a mi mundo</span>
+        <h1>Hola, soy <span class="gradient-text">Anderson</span></h1>
+        <h3 class="typing">Desarrollador Web Full Stack</h3>
+        <p>Estudiante de Ingeniería de Sistemas especializado en crear experiencias digitales únicas, combinando código limpio con diseño vanguardista.</p>
+        
+        <div class="btn-group">
+            <a href="#proyectos" class="btn">Explorar Proyectos</a>
+            <a href="#contacto" class="btn btn-outline">Hablemos</a>
+        </div>
+
+        <div class="social-icons">
+            <a href="#"><i class="ri-github-fill"></i></a>
+            <a href="#"><i class="ri-linkedin-box-fill"></i></a>
+            <a href="#"><i class="ri-instagram-line"></i></a>
+            <a href="#"><i class="ri-twitter-x-fill"></i></a>
+        </div>
+    </div>
+
+    <div class="perfil">
+        <div class="img-box">
+            <img src="milosxd.jpg" alt="Anderson">
+        </div>
+    </div>
+</section>
+
+<!-- HABILIDADES (NUEVA) -->
+<section id="habilidades" class="habilidades">
+    <h2 class="section-title">Mi <span>Stack</span> Tecnológico</h2>
+    <div class="skills-container">
+        <div class="skill-card"><i class="ri-html5-fill"></i> <span>HTML5</span></div>
+        <div class="skill-card"><i class="ri-css3-fill"></i> <span>CSS3</span></div>
+        <div class="skill-card"><i class="ri-javascript-fill"></i> <span>JavaScript</span></div>
+        <div class="skill-card"><i class="ri-reactjs-line"></i> <span>React</span></div>
+        <div class="skill-card"><i class="ri-database-2-line"></i> <span>SQL</span></div>
+        <div class="skill-card"><i class="ri-terminal-box-line"></i> <span>Git</span></div>
+    </div>
+</section>
+
+<!-- PROYECTOS -->
+<section id="proyectos" class="proyectos">
+    <h2 class="section-title">Proyectos <span>Destacados</span></h2>
+    <div class="cards">
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=500" alt="p1">
+            </div>
+            <div class="card-info">
+                <h3>E-commerce Pro</h3>
+                <p>Plataforma de ventas con carrito de compras y pasarela de pagos integrada.</p>
+                <div class="tags"><span>React</span><span>Node.js</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=500" alt="p2">
+            </div>
+            <div class="card-info">
+                <h3>Dashboard Analytics</h3>
+                <p>Panel de administración interactivo con visualización de datos en tiempo real.</p>
+                <div class="tags"><span>D3.js</span><span>Firebase</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=500" alt="p3">
+            </div>
+            <div class="card-info">
+                <h3>App Delivery</h3>
+                <p>Interfaz moderna para una aplicación de entrega de comida a domicilio.</p>
+                <div class="tags"><span>UI Design</span><span>Mobile</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contacto">
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>¿Tienes un <span>proyecto</span> en mente?</h2>
+            <p>Estoy disponible para proyectos freelance o colaboraciones a tiempo completo.</p>
+            <div class="info-item">
+                <i class="ri-mail-line"></i>
+                <p>tu-correo@estudiante.com</p>
+            </div>
+            <div class="info-item">
+                <i class="ri-map-pin-line"></i>
+                <p>Lima, Perú</p>
+            </div>
+        </div>
+
+        <form class="contact-form">
+            <div class="input-group">
+                <input type="text" placeholder="Tu Nombre" required>
+                <input type="email" placeholder="Correo Electrónico" required>
+            </div>
+            <textarea placeholder="Cuéntame sobre tu idea..." rows="5"></textarea>
+            <button type="submit" class="btn">Enviar Propuesta <i class="ri-send-plane-fill"></i></button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <p>© 2026 <span>Anderson</span> | Diseñado con ❤️ para la Web</p>
+    </div>
+</footer>
+
+<script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        header.classList.toggle('sticky', window.scrollY > 0);
+    });
+
+    // Mobile Menu
+    const toggle = document.getElementById('menu-toggle');
+    const navbar = document.getElementById('navbar');
+
+    toggle.onclick = () => {
+        navbar.classList.toggle('active');
+        toggle.classList.toggle('ri-close-line');
+    };
+</script>
+
+</body>
+</html>

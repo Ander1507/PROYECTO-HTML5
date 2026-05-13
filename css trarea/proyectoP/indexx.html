@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardenias Health Hub | Plataforma Médica Integral</title>
+    
+    <!-- Librerías de diseño y animación -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <style>
+        :root {
+            --primary: #1a759f;
+            --secondary: #34a0a4;
+            --emerald: #52b69a;
+            --dark: #184e77;
+            --accent: #d9ed92;
+            --light: #f1f8f9;
+            --white: #ffffff;
+            --danger: #ef476f;
+            --gold: #ffd166;
+            --glass: rgba(255, 255, 255, 0.95);
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--light); color: #333; overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            color: white; transition: 0.8s;
+        }
+        .loader-leaf { font-size: 4rem; color: var(--emerald); animation: heartBeat 1.5s infinite; }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 2000;
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: 1rem 5%; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--dark); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.3s; }
+        .nav-links a:hover { color: var(--emerald); transform: translateY(-2px); }
+
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .points-badge { background: var(--dark); color: white; padding: 6px 15px; border-radius: 50px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
+
+        /* --- VISTAS (SPA) --- */
+        .view { display: none; min-height: 100vh; padding-top: 100px; animation: fadeIn 0.6s ease; }
+        .view.active { display: block; }
+
+        /* --- HERO & FLASH SALE --- */
+        .flash-sale-bar { background: var(--danger); color: white; text-align: center; padding: 8px; font-weight: bold; position: fixed; top: 75px; width: 100%; z-index: 1500; font-size: 0.8rem; }
+
+        .hero-section { display: flex; align-items: center; justify-content: space-between; padding: 60px 8%; background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%); border-radius: 0 0 100px 100px; }
+        
+        /* --- TIENDA --- */
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+        .med-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .med-card { 
+            background: white; border-radius: 30px; padding: 30px; position: relative; 
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid #eee;
+        }
+        .med-card:hover { transform: translateY(-15px); box-shadow: var(--shadow); }
+        .fav-btn { position: absolute; top: 20px; right: 20px; color: #ccc; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .fav-btn.active { color: var(--danger); }
+        .stock-tag { font-size: 0.7rem; color: var(--emerald); font-weight: bold; display: block; margin-top: 5px; }
+
+        /* --- CALCULADORA IMC --- */
+        .health-tool { background: white; border-radius: 30px; padding: 40px; box-shadow: var(--shadow); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .calc-input { width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #eee; margin: 10px 0; font-size: 1rem; }
+
+        /* --- DOCTOR IA --- */
+        .wizard { background: white; border-radius: 40px; padding: 60px; box-shadow: var(--shadow); max-width: 900px; margin: 0 auto; border: 1px solid var(--accent); }
+        .step { display: none; }
+        .step.active { display: block; animation: slideInUp 0.5s; }
+        .symptom-btn { 
+            padding: 15px 30px; background: #f8f9fa; border: 2px solid #eee; border-radius: 50px; 
+            margin: 10px; cursor: pointer; transition: 0.3s; font-weight: 600;
+        }
+        .symptom-btn.selected { background: var(--emerald); color: white; border-color: var(--emerald); }
+
+        /* --- CARRITO PANEL --- */
+        #cart-panel {
+            position: fixed; right: -550px; top: 0; width: 500px; height: 100vh;
+            background: white; z-index: 3000; transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 40px; box-shadow: -20px 0 60px rgba(0,0,0,0.2); overflow-y: auto;
+        }
+        #cart-panel.active { right: 0; }
+        .prescription-upload { border: 2px dashed var(--primary); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0; cursor: pointer; }
+
+        /* --- TESTIMONIOS --- */
+        .testimonial-slider { display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
+        .test-card { min-width: 350px; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
+        .stars { color: var(--gold); margin-bottom: 10px; }
+
+        /* --- CHATBOT --- */
+        #chat-ui { position: fixed; bottom: 30px; left: 30px; z-index: 2500; }
+        .chat-btn { width: 70px; height: 70px; background: var(--primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.8rem; cursor: pointer; box-shadow: var(--shadow); }
+        .chat-window { 
+            position: absolute; bottom: 90px; left: 0; width: 350px; height: 500px; 
+            background: white; border-radius: 25px; box-shadow: var(--shadow); display: none; 
+            flex-direction: column; border: 1px solid #eee;
+        }
+
+        /* --- GENERALES --- */
+        .btn { padding: 15px 35px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.4s; display: inline-block; text-align: center; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(26, 117, 159, 0.3); }
+        .btn-primary:hover { background: var(--dark); transform: scale(1.05); }
+        .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
+
+        footer { background: var(--dark); color: white; padding: 80px 8% 40px; margin-top: 100px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Carga -->
+    <div id="preloader">
+        <i class="fas fa-hand-holding-medical loader-leaf"></i>
+        <h1 style="margin-top: 20px; font-family: 'Playfair Display';">GARDENIAS</h1>
+        <p>Preparando tu bienestar...</p>
+    </div>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="logo" onclick="switchView('home')">
+            <i class="fas fa-heartbeat" style="color: var(--emerald);"></i> GARDENIAS
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="switchView('home')">Inicio</a></li>
+            <li><a onclick="switchView('store')">Farmacia</a></li>
+            <li><a onclick="switchView('doctor')">Doctor IA</a></li>
+            <li><a onclick="switchView('salud')">Calculadora Salud</a></li>
+            <li><a onclick="switchView('sucursales')">Sucursales</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="points-badge"><i class="fas fa-star"></i> <span id="user-points">150</span> pts</div>
+            <div onclick="toggleCart()" style="cursor: pointer; position: relative;">
+                <i class="fas fa-shopping-bag" style="font-size: 1.5rem;"></i>
+                <span id="cart-count" style="position: absolute; top:-8px; right:-8px; background: var(--danger); color: white; border-radius: 50%; padding: 2px 7px; font-size: 0.7rem;">0</span>
+            </div>
+            <button class="btn btn-primary" style="padding: 10px 20px;" onclick="switchView('login')">Ingresar</button>
+        </div>
+    </nav>
+
+    <!-- Oferta Relámpago Bar -->
+    <div class="flash-sale-bar">
+        🔥 ¡OFERTA RELÁMPAGO! Termina en: <span id="flash-timer">02:59:59</span> | 30% Dcto en Vitaminas
+    </div>
+
+    <!-- VISTA 1: HOME -->
+    <section id="view-home" class="view active">
+        <div class="hero-section">
+            <div style="max-width: 600px;">
+                <span class="points-badge" style="background: var(--emerald); margin-bottom: 20px;">CALIDAD GARANTIZADA</span>
+                <h1 style="font-size: 4.8rem; font-family: 'Playfair Display'; line-height: 1; margin-bottom: 25px;">Tu Salud, Nuestra Ciencia.</h1>
+                <p style="font-size: 1.3rem; color: #555; margin-bottom: 40px;">Experimenta la botica del futuro. Inteligencia artificial aplicada a tu diagnóstico y un sistema de recompensas único en el país.</p>
+                <div style="display: flex; gap: 20px;">
+                    <button class="btn btn-primary" onclick="switchView('store')">Ir a Farmacia</button>
+                    <button class="btn btn-outline" onclick="switchView('doctor')">Doctor Virtual</button>
+                </div>
+            </div>
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/pharmaceutical-industry-4487143-3726282.png" style="width: 40%;" class="animate__animated animate__fadeInRight">
+        </div>
+
+        <div class="container">
+            <h2 style="text-align: center; margin: 60px 0 30px;">Lo que dicen nuestros pacientes</h2>
+            <div class="testimonial-slider">
+                <div class="test-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"El sistema de puntos es increíble, ya he canjeado dos jarabes gratis. La atención es A1."</p>
+                    <h4 style="margin-top: 15px;">- Carlos Mendoza</h4>
+                </div>
+                <div class="test-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"Me encanta el Doctor IA, me ayudó a identificar mi alergia rápidamente. Muy recomendado."</p>
+                    <h4 style="margin-top: 15px;">- Lucía Fernández</h4>
+                </div>
+                <div class="test-card">
+                    <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"Delivery súper veloz. Mi pedido llegó en 20 minutos literales."</p>
+                    <h4 style="margin-top: 15px;">- Ricardo Palma</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 2: FARMACIA -->
+    <section id="view-store" class="view">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+                <div>
+                    <h1>Tienda Online</h1>
+                    <p>Gana Puntos Gardenia con cada producto</p>
+                </div>
+                <div style="background: white; padding: 12px 20px; border-radius: 50px; box-shadow: var(--shadow);">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchBar" onkeyup="filterStore()" placeholder="Buscar medicina..." style="border: none; outline: none; margin-left: 10px; width: 300px; font-size: 1rem;">
+                </div>
+            </div>
+            
+            <div class="med-grid" id="main-store">
+                <!-- Dinámico -->
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 3: DOCTOR IA -->
+    <section id="view-doctor" class="view">
+        <div class="container">
+            <div class="wizard">
+                <div id="step-1" class="step active">
+                    <h2>Bienvenido al Asistente IA</h2>
+                    <p>Selecciona tus síntomas actuales para un pre-diagnóstico:</p>
+                    <div style="margin-top: 30px;">
+                        <button class="symptom-btn" onclick="toggleSym(this, 'cabeza')">Dolor de Cabeza</button>
+                        <button class="symptom-btn" onclick="toggleSym(this, 'fiebre')">Fiebre</button>
+                        <button class="symptom-btn" onclick="toggleSym(this, 'gripe')">Gripe / Congestión</button>
+                        <button class="symptom-btn" onclick="toggleSym(this, 'estomago')">Dolor de Estómago</button>
+                        <button class="symptom-btn" onclick="toggleSym(this, 'muscular')">Dolor Muscular</button>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 30px;" onclick="changeStep(2)">Continuar</button>
+                </div>
+
+                <div id="step-2" class="step">
+                    <h2>Verificación de Seguridad</h2>
+                    <p>¿Es usted alérgico a alguno de estos componentes?</p>
+                    <div style="margin: 30px 0; display: grid; gap: 15px;">
+                        <label><input type="checkbox" id="alg-pen"> Penicilina</label>
+                        <label><input type="checkbox" id="alg-ibu"> Ibuprofeno / AINES</label>
+                        <label><input type="checkbox" id="alg-sul"> Sulfas</label>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-outline" style="flex: 1;" onclick="changeStep(1)">Atrás</button>
+                        <button class="btn btn-primary" style="flex: 2;" onclick="showFinalDiag()">Obtener Receta Sugerida</button>
+                    </div>
+                </div>
+
+                <div id="step-3" class="step">
+                    <div id="diag-box" style="background: #f0fdf4; padding: 40px; border-radius: 20px; text-align: center;"></div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 30px;" onclick="switchView('store')">Comprar Sugeridos</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 4: CALCULADORA SALUD -->
+    <section id="view-salud" class="view">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 50px;">Centro de Monitoreo de Salud</h1>
+            <div class="health-tool">
+                <div>
+                    <h2>Calculadora de IMC</h2>
+                    <p>Conoce tu estado nutricional en segundos.</p>
+                    <div style="margin-top: 20px;">
+                        <label>Peso (kg)</label>
+                        <input type="number" id="weight" class="calc-input" placeholder="Ej: 70">
+                        <label>Altura (cm)</label>
+                        <input type="number" id="height" class="calc-input" placeholder="Ej: 175">
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="calculateBMI()">Calcular Ahora</button>
+                    </div>
+                </div>
+                <div id="bmi-result" style="background: var(--light); padding: 40px; border-radius: 20px; text-align: center;">
+                    <i class="fas fa-weight" style="font-size: 3rem; color: var(--primary);"></i>
+                    <h3 style="margin-top: 20px;">Introduce tus datos</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 5: SUCURSALES -->
+    <section id="view-sucursales" class="view">
+        <div class="container">
+            <h1 style="margin-bottom: 40px;">Nuestras Sedes</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div style="background: #ddd; border-radius: 30px; height: 500px; display: flex; align-items: center; justify-content: center; font-weight: bold;">MAPA INTERACTIVO (GOOGLE MAPS)</div>
+                <div>
+                    <div style="background: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
+                        <h3>Sede San Isidro</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Av. Los Libertadores 456</p>
+                        <p><i class="fas fa-clock"></i> 24 Horas</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow);">
+                        <h3>Sede Miraflores</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Calle Las Gardenias 789</p>
+                        <p><i class="fas fa-clock"></i> 08:00 AM - 10:00 PM</p>
+                    </div>
+                    <div style="background: white; padding: 25px; border-radius: 20px; box-shadow: var(--shadow);">
+                        <h3>Sede La Molina</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Av. La Universidad 123</p>
+                        <p><i class="fas fa-clock"></i> 07:00 AM - 11:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA LOGIN -->
+    <section id="view-login" class="view">
+        <div class="container">
+            <div style="max-width: 450px; margin: 0 auto; background: white; padding: 50px; border-radius: 30px; box-shadow: var(--shadow);">
+                <h2 style="text-align: center; margin-bottom: 30px;">Iniciar Sesión</h2>
+                <input type="email" placeholder="Correo Electrónico" class="calc-input">
+                <input type="password" placeholder="Contraseña" class="calc-input">
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="alert('Bienvenido!')">Ingresar</button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#" style="color: var(--primary); text-decoration: none;">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL CARRITO -->
+    <div id="cart-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2>Mi Pedido</h2>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor: pointer; font-size: 1.5rem;"></i>
+        </div>
+
+        <div id="cart-items-container" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;">
+            <!-- Dinámico -->
+        </div>
+
+        <!-- Puntos -->
+        <div style="background: var(--dark); color: white; padding: 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <div>
+                <small>Mis Puntos:</small>
+                <div id="cart-points" style="font-size: 1.3rem; font-weight: bold;">150</div>
+            </div>
+            <button onclick="applyPoints()" style="background: var(--accent); border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold; cursor: pointer;">CANJEAR 50 PTS (-S/ 5.00)</button>
+        </div>
+
+        <!-- Receta -->
+        <div class="prescription-upload" onclick="alert('Funcionalidad de cámara abierta...')">
+            <i class="fas fa-camera" style="font-size: 1.5rem; margin-bottom: 10px;"></i>
+            <p>Sube tu receta médica (Obligatorio para antibióticos)</p>
+        </div>
+
+        <!-- Delivery y Pago -->
+        <div style="background: #f8f9fa; padding: 25px; border-radius: 20px;">
+            <h4>Opciones de Entrega</h4>
+            <input type="text" id="address" placeholder="Dirección de envío" class="calc-input" style="background: white;">
+            
+            <h4 style="margin-top: 20px;">Método de Pago</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                <button class="btn btn-outline" id="pay-card" onclick="setPay('card')" style="padding: 10px;">💳 Tarjeta</button>
+                <button class="btn btn-outline" id="pay-yape" onclick="setPay('yape')" style="padding: 10px;">📱 Yape/Plin</button>
+            </div>
+            
+            <div id="yape-qr-box" style="display:none; text-align: center; margin-top: 15px;">
+                <img src="https://static.comunicae.com/photos/notas/1218086/1598442966_Logo_Yape_2.png" style="width: 60px;">
+                <p>Escanea y yapea al: <b>987654321</b></p>
+                <div style="width: 100px; height: 100px; background: #ddd; margin: 10px auto;">QR</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px; border-top: 2px solid #eee; padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: 800;">
+                <span>Total:</span>
+                <span>S/ <span id="cart-total">0.00</span></span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px; font-size: 1.2rem;" onclick="finalizeOrder()">PEDIR AHORA</button>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chat-ui">
+        <div class="chat-window" id="chat-window">
+            <div style="background: var(--primary); color: white; padding: 15px; font-weight: bold;">Gardenia Assistant ✨</div>
+            <div id="chat-log" style="flex: 1; padding: 15px; overflow-y: auto; font-size: 0.9rem;">
+                <p style="background: #eee; padding: 10px; border-radius: 10px; margin-bottom: 10px;">¡Hola! Soy tu asistente. ¿Cómo puedo ayudarte con tu pedido hoy?</p>
+            </div>
+            <div style="padding: 15px; border-top: 1px solid #eee; display: flex;">
+                <input type="text" id="chat-in" placeholder="Escribe un mensaje..." style="flex:1; border:none; outline:none;">
+                <button onclick="chatSend()" style="background:none; border:none; color:var(--primary); cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="chat-btn" onclick="toggleChat()"><i class="fas fa-comment-dots"></i></div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px;">GARDENIAS</h2>
+                <p>Expertos en salud y bienestar digital con más de 25 años de trayectoria física.</p>
+                <div style="margin-top: 20px; font-size: 1.5rem; display: flex; gap: 15px;">
+                    <i class="fab fa-facebook"></i><i class="fab fa-instagram"></i><i class="fab fa-whatsapp"></i>
+                </div>
+            </div>
+            <div>
+                <h4>Servicios</h4>
+                <p>Delivery 24/7</p>
+                <p>Consultas Médicas</p>
+                <p>Canje de Puntos</p>
+                <p>Seguros Afiliados</p>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <p>📞 (01) 456-7890</p>
+                <p>📧 contacto@gardenias.com</p>
+                <p>📍 Sede Central: San Isidro, Lima</p>
+            </div>
+        </div>
+        <hr style="margin: 40px 0; opacity: 0.1;">
+        <p style="text-align: center; font-size: 0.8rem; opacity: 0.5;">&copy; 2024 Botica Gardenias S.A. - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // BASE DE DATOS EXTENSA
+        const medicines = [
+            { id: 1, name: 'Panadol Forte', price: 10.50, pts: 10, icon: '💊', cat: 'adulto' },
+            { id: 2, name: 'Amoxicilina 500mg', price: 15.00, pts: 15, icon: '🧬', cat: 'antibiotico' },
+            { id: 3, name: 'Vick VapoRub', price: 12.50, pts: 12, icon: '🍃', cat: 'resfrio' },
+            { id: 4, name: 'Magnesol Efervescente', price: 42.00, pts: 40, icon: '🥤', cat: 'suplemento' },
+            { id: 5, name: 'Sal de Andrews', price: 2.50, pts: 2, icon: '✨', cat: 'estomago' },
+            { id: 6, name: 'Protector Solar FPS 50', price: 85.00, pts: 80, icon: '☀️', cat: 'piel' },
+            { id: 7, name: 'Leche Nan Pro 1', price: 92.00, pts: 90, icon: '🍼', cat: 'bebe' },
+            { id: 8, name: 'Ibuprofeno 400mg', price: 8.00, pts: 8, icon: '💊', cat: 'adulto' },
+            { id: 9, name: 'Kit Nebulizador', price: 145.00, pts: 140, icon: '🌬️', cat: 'equipo' },
+            { id: 10, name: 'Serum Vitamina C', price: 110.00, pts: 100, icon: '✨', cat: 'piel' }
+        ];
+
+        let cart = [];
+        let points = 150;
+        let discount = 0;
+        let selectedSymptoms = [];
+
+        // PRELOADER
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => document.getElementById('preloader').style.display = 'none', 800);
+            }, 1500);
+        });
+
+        // SWITCH VISTAS
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // STORE LOGIC
+        function renderStore(data = medicines) {
+            const container = document.getElementById('main-store');
+            container.innerHTML = data.map(m => `
+                <div class="med-card animate__animated animate__fadeInUp">
+                    <i class="fas fa-heart fav-btn" onclick="toggleFav(this)"></i>
+                    <span class="points-badge" style="background:var(--accent); color:var(--dark); font-size:0.6rem; position:absolute; top:20px; left:20px;">+${m.pts} PTS</span>
+                    <div style="font-size:3.5rem; text-align:center;">${m.icon}</div>
+                    <h3 style="margin:15px 0 5px;">${m.name}</h3>
+                    <span class="stock-tag">Disponible</span>
+                    <p style="font-size:1.5rem; font-weight:800; color:var(--primary); margin:10px 0;">S/ ${m.price.toFixed(2)}</p>
+                    <button class="btn btn-primary" style="width:100%;" onclick="addToCart(${m.id})">Añadir al Carrito</button>
+                </div>
+            `).join('');
+        }
+
+        function filterStore() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filtered = medicines.filter(m => m.name.toLowerCase().includes(query));
+            renderStore(filtered);
+        }
+
+        function toggleFav(el) { el.classList.toggle('active'); }
+
+        // CARRITO LOGIC
+        function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
+
+        function addToCart(id) {
+            const med = medicines.find(m => m.id === id);
+            cart.push(med);
+            updateCartUI();
+            
+            const count = document.getElementById('cart-count');
+            count.innerText = cart.length;
+            count.classList.add('animate__animated', 'animate__rubberBand');
+            setTimeout(() => count.classList.remove('animate__rubberBand'), 1000);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = cart.map((item, idx) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f0f7f7; padding:10px; border-radius:10px;">
+                    <span>${item.icon} ${item.name}</span>
+                    <b>S/ ${item.price.toFixed(2)}</b>
+                    <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="removeFromCart(${idx})"></i>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((acc, val) => acc + val.price, 0) - discount;
+            document.getElementById('cart-total').innerText = Math.max(0, total).toFixed(2);
+            document.getElementById('cart-points').innerText = points;
+            document.getElementById('user-points').innerText = points;
+        }
+
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
+            updateCartUI();
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        function applyPoints() {
+            if(points >= 50) {
+                points -= 50;
+                discount += 5;
+                updateCartUI();
+                alert("Canjeaste 50 puntos por S/ 5.00 de descuento!");
+            } else {
+                alert("Puntos insuficientes.");
+            }
+        }
+
+        function setPay(type) {
+            document.getElementById('yape-qr-box').style.display = (type === 'yape') ? 'block' : 'none';
+        }
+
+        // DOCTOR IA LOGIC
+        function toggleSym(btn, sym) {
+            btn.classList.toggle('selected');
+            if(selectedSymptoms.includes(sym)) selectedSymptoms = selectedSymptoms.filter(s => s !== sym);
+            else selectedSymptoms.push(sym);
+        }
+
+        function changeStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + n).classList.add('active');
+        }
+
+        function showFinalDiag() {
+            changeStep(3);
+            const isPen = document.getElementById('alg-pen').checked;
+            const isIbu = document.getElementById('alg-ibu').checked;
+            const box = document.getElementById('diag-box');
+
+            let rec = "Descanso y mucha agua";
+            let warning = "";
+
+            if(selectedSymptoms.includes('cabeza') || selectedSymptoms.includes('fiebre')) {
+                rec = isIbu ? "Paracetamol 500mg" : "Ibuprofeno 400mg";
+                if(isIbu) warning = "⚠️ Sugerimos Paracetamol debido a tu alergia a los AINES.";
+            } else if(selectedSymptoms.includes('gripe')) {
+                rec = "Vick VapoRub y Vitamina C";
+            }
+
+            box.innerHTML = `
+                <i class="fas fa-check-circle" style="font-size:3rem; color:var(--emerald);"></i>
+                <h2 style="margin:15px 0;">Sugerencia de la IA</h2>
+                <p><b>Medicamento:</b> ${rec}</p>
+                <p style="color:red; font-size:0.8rem; margin-top:10px;">${warning}</p>
+                <p style="margin-top:15px; font-size:0.9rem;">Recuerda: Esta es una orientación. Si los síntomas persisten, consulta a un médico presencial.</p>
+            `;
+        }
+
+        // CALCULADORA IMC
+        function calculateBMI() {
+            const w = document.getElementById('weight').value;
+            const h = document.getElementById('height').value / 100;
+            const resBox = document.getElementById('bmi-result');
+
+            if(!w || !h) return alert("Por favor completa los datos");
+
+            const imc = (w / (h * h)).toFixed(1);
+            let status = "";
+            let color = "";
+
+            if(imc < 18.5) { status = "Bajo peso"; color = "#3498db"; }
+            else if(imc < 25) { status = "Peso normal"; color = "#2ecc71"; }
+            else if(imc < 30) { status = "Sobrepeso"; color = "#f1c40f"; }
+            else { status = "Obesidad"; color = "#e74c3c"; }
+
+            resBox.innerHTML = `
+                <h2 style="color:${color}; font-size:3rem;">${imc}</h2>
+                <h3>${status}</h3>
+                <p style="margin-top:10px;">¡Sigue cuidando tu salud con Gardenias!</p>
+            `;
+        }
+
+        // TIMER FLASH SALE
+        setInterval(() => {
+            const timer = document.getElementById('flash-timer');
+            let [h, m, s] = timer.innerText.split(':').map(Number);
+            s--;
+            if(s < 0) { s = 59; m--; }
+            if(m < 0) { m = 59; h--; }
+            timer.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }, 1000);
+
+        // CHATBOT
+        function toggleChat() { 
+            const win = document.getElementById('chat-window');
+            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex'; 
+        }
+
+        function chatSend() {
+            const input = document.getElementById('chat-in');
+            const log = document.getElementById('chat-log');
+            if(!input.value) return;
+
+            log.innerHTML += `<p style="text-align:right; margin-bottom:10px;"><b>Tú:</b> ${input.value}</p>`;
+            
+            let botResp = "Interesante. ¿Deseas que un asesor humano te llame?";
+            if(input.value.toLowerCase().includes("hola")) botResp = "¡Hola! Bienvenido a Gardenias. ¿Cómo te sientes hoy?";
+            if(input.value.toLowerCase().includes("delivery")) botResp = "Nuestro delivery tarda en promedio 30 minutos.";
+
+            setTimeout(() => {
+                log.innerHTML += `<p style="background:#e1f5fe; padding:10px; border-radius:10px; margin-bottom:10px;"><b>AI:</b> ${botResp}</p>`;
+                log.scrollTop = log.scrollHeight;
+            }, 600);
+            input.value = "";
+        }
+
+        function finalizeOrder() {
+            if(cart.length === 0) return alert("Tu carrito está vacío");
+            alert("✅ Pedido procesado con éxito. Llegaremos en 30 minutos.");
+            cart = [];
+            points += 50;
+            updateCartUI();
+            toggleCart();
+        }
+
+        // INIT
+        renderStore();
+    </script>
+</body>
+</html>

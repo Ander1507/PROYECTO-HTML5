@@ -6,13 +6,13 @@
 }
 
 body {
-    background: #ff4d4d;
+    background: #dd8b0f;
 }
 
 header {
     background: black;
-    color: white;
-    text-align: center;
+    color: rgb(213, 207, 22);
+    text-align: right;
     padding: 20px;
 }
 
@@ -30,7 +30,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background: red;
+    background: rgb(21, 200, 78);
 }
 
 section, aside {
@@ -48,7 +48,7 @@ article {
 }
 
 footer {
-    background: black;
+    background: rgb(145, 201, 14);
     color: white;
     text-align: center;
     padding: 15px;
